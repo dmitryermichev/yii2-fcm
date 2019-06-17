@@ -4,11 +4,10 @@
 namespace dmerm\yii2fcm;
 
 
-interface Device
+interface TokenOwner
 {
-    public static function findByFirebaseToken($token): Device;
 
-    public static function findById($id): Device;
+    public static function findById($id): TokenOwner;
 
     public function getFirebaseToken(): string;
 

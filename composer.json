@@ -2,6 +2,7 @@
     "name": "dmitryermichev/yii2-fcm",
     "description": "Firebase notifications extension for Yii2",
     "type": "library",
+    "version": "1.0",
     "authors": [
         {
             "name": "Dmitry Ermichev",

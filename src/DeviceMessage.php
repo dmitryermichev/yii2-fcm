@@ -8,7 +8,7 @@ use paragraph1\phpFCM\Message;
 
 class DeviceMessage extends Message
 {
-    public function addDevice(Device $device)
+    public function addDevice(TokenOwner $device)
     {
         $this->addRecipient(new \paragraph1\phpFCM\Recipient\Device($device->getFirebaseToken()));
     }

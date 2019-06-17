@@ -15,7 +15,7 @@ class RegisterTokenAction extends Action
      */
     public $params;
     /**
-     * @var Device
+     * @var TokenOwner
      */
     public $modelClass;
 
@@ -35,8 +35,8 @@ class RegisterTokenAction extends Action
             throw new InvalidConfigException('modelClass must be set');
         }
 
-        if (!is_subclass_of($this->modelClass, Device::class)) {
-            throw new InvalidConfigException('modelClass must be subclass of ' . Device::class);
+        if (!is_subclass_of($this->modelClass, TokenOwner::class)) {
+            throw new InvalidConfigException('modelClass must be subclass of ' . TokenOwner::class);
         }
 
         if ($this->params === null) {
