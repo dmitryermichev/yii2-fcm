@@ -1,0 +1,22 @@
+{
+    "name": "dmitryermichev/yii2-fcm",
+    "description": "Firebase notifications extension for Yii2",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Dmitry Ermichev",
+            "email": "dmitryermichev@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=7.0",
+        "paragraph1/php-fcm": "~0.6",
+        "yiisoft/yii2": "~2.0.15"
+    },
+    "autoload": {
+        "psr-4": {
+            "dmerm\\yii2fcm\\": "src"
+        }
+    }
+}
