@@ -5,11 +5,14 @@ namespace dmerm\yii2fcm;
 
 
 use paragraph1\phpFCM\Message;
+use paragraph1\phpFCM\Recipient\Device;
 
 class DeviceMessage extends Message
 {
-    public function addDevice(TokenOwner $device)
+    public function addTokenOwner(TokenOwner $device)
     {
-        $this->addRecipient(new \paragraph1\phpFCM\Recipient\Device($device->getFirebaseToken()));
+        foreach ($device->getFirebaseTokens() as $token) {
+            $this->addRecipient(new Device($token));
+        }
     }
 }

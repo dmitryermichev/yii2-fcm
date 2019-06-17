@@ -9,7 +9,10 @@ interface TokenOwner
 
     public static function findById($id): TokenOwner;
 
-    public function getFirebaseToken(): string;
+    /**
+     * @return string[]
+     */
+    public function getFirebaseTokens(): array;
 
     public function setFirebaseToken(string $token);
 
