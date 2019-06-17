@@ -6,18 +6,21 @@ namespace dmerm\yii2fcm;
 
 use yii\base\Action;
 use yii\base\InvalidConfigException;
+use yii\di\Instance;
 use yii\web\NotFoundHttpException;
 
 class UnregisterTokenAction extends Action
 {
+    public $firebaseComponentName = 'firebase';
     /**
      * @var array contains 'token' and 'id' fields
      */
     public $params;
+
     /**
-     * @var TokenOwner
+     * @var Firebase
      */
-    public $modelClass;
+    protected $firebase;
 
     /**
      * @var string model class using for register action
@@ -30,6 +33,8 @@ class UnregisterTokenAction extends Action
     public function init()
     {
         parent::init();
+
+        $this->firebase = Instance::ensure($this->firebaseComponentName, Firebase::class);
 
         if ($this->modelClass === null) {
             throw new InvalidConfigException('modelClass must be set');
@@ -60,12 +65,6 @@ class UnregisterTokenAction extends Action
             return $unregParamsModel;
         }
 
-        $model = $this->modelClass::findById($unregParamsModel->getId());
-        if (!$model) {
-            throw new NotFoundHttpException('Device not found by id ' . $unregParamsModel->getId());
-        }
-        $model->deleteFirebaseToken($unregParamsModel->getToken());
-
-        return $model;
+        return $this->firebase->unregisterToken($unregParamsModel->getId(), $unregParamsModel->getToken());
     }
 }

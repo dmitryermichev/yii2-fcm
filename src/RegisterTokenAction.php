@@ -6,18 +6,21 @@ namespace dmerm\yii2fcm;
 
 use yii\base\Action;
 use yii\base\InvalidConfigException;
+use yii\di\Instance;
 use yii\web\NotFoundHttpException;
 
 class RegisterTokenAction extends Action
 {
+    public $firebaseComponentName = 'firebase';
     /**
      * @var array contains 'token' and 'id' fields
      */
     public $params;
+
     /**
-     * @var TokenOwner
+     * @var Firebase
      */
-    public $modelClass;
+    protected $firebase;
 
     /**
      * @var string model class using for register action
@@ -31,13 +34,7 @@ class RegisterTokenAction extends Action
     {
         parent::init();
 
-        if ($this->modelClass === null) {
-            throw new InvalidConfigException('modelClass must be set');
-        }
-
-        if (!is_subclass_of($this->modelClass, TokenOwner::class)) {
-            throw new InvalidConfigException('modelClass must be subclass of ' . TokenOwner::class);
-        }
+        $this->firebase = Instance::ensure($this->firebaseComponentName, Firebase::class);
 
         if ($this->params === null) {
             $this->params = \Yii::$app->request->getBodyParams();
@@ -60,12 +57,6 @@ class RegisterTokenAction extends Action
             return $regParamsModel;
         }
 
-        $model = $this->modelClass::findById($regParamsModel->getId());
-        if (!$model) {
-            throw new NotFoundHttpException('Device not found by id ' . $regParamsModel->getId());
-        }
-        $model->setFirebaseToken($regParamsModel->getToken());
-
-        return $model;
+        return $this->firebase->registerToken($regParamsModel->getId(), $regParamsModel->getToken());
     }
 }

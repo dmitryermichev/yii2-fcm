@@ -6,6 +6,7 @@ use paragraph1\phpFCM\Client;
 use paragraph1\phpFCM\Message;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
+use yii\web\NotFoundHttpException;
 
 class Firebase extends Component
 {
@@ -25,19 +26,29 @@ class Firebase extends Component
     public $fireBaseClient;
 
     /**
+     * @var string|TokenOwner classname of token owner
+     */
+    public $tokenOwnerClass;
+
+    /**
      * @throws InvalidConfigException
      */
     public function init()
     {
         parent::init();
 
+        if (!$this->apiKey) {
+            throw new InvalidConfigException('Firebase: apiKey must be set');
+        }
+
+        if (!$this->tokenOwnerClass) {
+            throw new InvalidConfigException('Firebase: token owner class must be set');
+        }
+
         if (!$this->fireBaseClient) {
             $this->fireBaseClient = new Client();
         }
 
-        if (!$this->apiKey) {
-            throw new InvalidConfigException('Firebase: apiKey must be set');
-        }
         $this->fireBaseClient->setApiKey($this->apiKey);
 
         if (!$this->httpClient) {
@@ -54,5 +65,41 @@ class Firebase extends Component
     public function send(Message $message)
     {
         return $this->fireBaseClient->send($message);
+    }
+
+    /**
+     * @param $ownerId
+     * @param $token
+     *
+     * @return TokenOwner
+     * @throws NotFoundHttpException
+     */
+    public function registerToken($ownerId, $token)
+    {
+        $model = $this->tokenOwnerClass::findById($ownerId);
+        if (!$model) {
+            throw new NotFoundHttpException($this->tokenOwnerClass . ' not found by id ' . $ownerId);
+        }
+        $model->setFirebaseToken($token);
+
+        return $model;
+    }
+
+    /**
+     * @param $ownerId
+     * @param $token
+     *
+     * @return TokenOwner
+     * @throws NotFoundHttpException
+     */
+    public function unregisterToken($ownerId, $token)
+    {
+        $model = $this->tokenOwnerClass::findById($ownerId);
+        if (!$model) {
+            throw new NotFoundHttpException($this->tokenOwnerClass . ' not found by id ' . $ownerId);
+        }
+        $model->setFirebaseToken($token);
+
+        return $model;
     }
 }
