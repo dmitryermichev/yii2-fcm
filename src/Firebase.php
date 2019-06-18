@@ -98,7 +98,7 @@ class Firebase extends Component
         if (!$model) {
             throw new NotFoundHttpException($this->tokenOwnerClass . ' not found by id ' . $ownerId);
         }
-        $model->setFirebaseToken($token);
+        $model->deleteFirebaseToken($token);
 
         return $model;
     }
