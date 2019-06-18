@@ -36,12 +36,8 @@ class UnregisterTokenAction extends Action
 
         $this->firebase = Instance::ensure($this->firebaseComponentName, Firebase::class);
 
-        if ($this->modelClass === null) {
-            throw new InvalidConfigException('modelClass must be set');
-        }
-
-        if (!is_subclass_of($this->modelClass, TokenOwner::class)) {
-            throw new InvalidConfigException('modelClass must be subclass of ' . TokenOwner::class);
+        if ($this->unregisterParamsModelClass === null) {
+            throw new InvalidConfigException('unregisterParamsModelClass must be set');
         }
 
         if ($this->params === null) {
