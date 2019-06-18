@@ -3,6 +3,7 @@
     "description": "Firebase notifications extension for Yii2",
     "type": "library",
     "version": "1.0",
+    "license": "Apache-2.0",
     "authors": [
         {
             "name": "Dmitry Ermichev",
