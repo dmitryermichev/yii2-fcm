@@ -25,4 +25,9 @@ class BaseUnregisterParams extends UnregisterParams
     {
         return $this->token;
     }
+
+    public function formName()
+    {
+        return '';
+    }
 }

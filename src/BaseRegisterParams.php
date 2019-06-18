@@ -25,4 +25,9 @@ class BaseRegisterParams extends RegisterParams
     {
         return $this->token;
     }
+
+    public function formName()
+    {
+        return '';
+    }
 }
