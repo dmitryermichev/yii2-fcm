@@ -8,6 +8,8 @@ interface TokenOwner
 {
 
     public static function findById($id): TokenOwner;
+    
+    public static function findByFirebaseToken($token): TokenOwner;
 
     /**
      * @return string[]
