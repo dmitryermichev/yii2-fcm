@@ -6,10 +6,19 @@ namespace dmerm\yii2fcm;
 
 interface TokenOwner
 {
+    /**
+     * @param $token
+     *
+     * @return self|null
+     */
+    public static function findByFirebaseToken($token);
 
-    public static function findById($id): TokenOwner;
-    
-    public static function findByFirebaseToken($token): TokenOwner;
+    /**
+     * @param $id
+     *
+     * @return self|null
+     */
+    public static function findById($id);
 
     /**
      * @return string[]
