@@ -5,6 +5,7 @@ namespace dmerm\yii2fcm;
 use paragraph1\phpFCM\Client;
 use paragraph1\phpFCM\Message;
 use yii\base\Component;
+use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\web\NotFoundHttpException;
 
@@ -67,7 +68,7 @@ class Firebase extends Component
         return $this->fireBaseClient->send($message);
     }
 
-     /**
+    /**
      * @param $ownerId
      * @param $token
      *
@@ -76,10 +77,14 @@ class Firebase extends Component
      */
     public function registerToken($ownerId, $token)
     {
-        $oldModel = $this->tokenOwnerClass::findByFirebaseToken($token);
-        if ($oldModel !== null) {
+        while(true) {
+            $oldModel = $this->tokenOwnerClass::findByFirebaseToken($token);
+            if ($oldModel === null) {
+                break;
+            }
             $oldModel->deleteFirebaseToken($token);
         }
+
         $model = $this->tokenOwnerClass::findById($ownerId);
         if (!$model) {
             throw new NotFoundHttpException($this->tokenOwnerClass . ' not found by id ' . $ownerId);
