@@ -67,7 +67,7 @@ class Firebase extends Component
         return $this->fireBaseClient->send($message);
     }
 
-    /**
+     /**
      * @param $ownerId
      * @param $token
      *
@@ -76,6 +76,10 @@ class Firebase extends Component
      */
     public function registerToken($ownerId, $token)
     {
+        $oldModel = $this->tokenOwnerClass::findByFirebaseToken($token);
+        if ($oldModel !== null) {
+            $oldModel->deleteFirebaseToken($token);
+        }
         $model = $this->tokenOwnerClass::findById($ownerId);
         if (!$model) {
             throw new NotFoundHttpException($this->tokenOwnerClass . ' not found by id ' . $ownerId);
