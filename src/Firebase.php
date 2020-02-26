@@ -77,7 +77,7 @@ class Firebase extends Component
      */
     public function registerToken($ownerId, $token)
     {
-        $oldModelsLimit = 5
+        $oldModelsLimit = 5;
         for($i = 0; $i < $oldModelsLimit; $i++) {
             $oldModel = $this->tokenOwnerClass::findByFirebaseToken($token);
             if ($oldModel === null) {
